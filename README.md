@@ -20,17 +20,64 @@ This project is utilizes the [Apache Hadoop 3.2.1](http://hadoop.apache.org) fra
 ## Running
 To successfully run this project, the [Hortonworks Data Platform (HDP)](https://www.cloudera.com/downloads/hortonworks-sandbox.html) on Sandbox with Apache Hadoop, [VMware](https://my.vmware.com/en/web/vmware/downloads) or [VirtualBox](https://www.virtualbox.org/wiki/Downloads) virtualization software, [sbt](https://docs.scala-lang.org/getting-started/sbt-track/getting-started-with-scala-and-sbt-on-the-command-line.html) and [Java 8 JDK](https://www.oracle.com/technetwork/java/javase/downloads/index.html) (version 1.8 or higher) are required.
 
-1. From the project root directory, enter the following Terminal command to (1) run all tests and (2) assemble the JAR necessary to run the program on the sandbox:
+1. From the project root directory, enter the following Terminal command to (1) run all tests and (2) assemble the necessary JAR:
     
     ```
     sbt clean assembly
     ```
     
 2. Start the HDP sandbox. Then, enter the following command in Terminal to transfer the JAR into the home directory.
-
+    
     ```
     scp -P 2222 target/scala-2.13/Shyam_Patel_hw2-assembly-0.1.jar maria_dev@sandbox-hdp.hoziprtonworks.com:~/
     ```
+    
+3. SSH into the HDP sandbox.
+    
+    ```
+    ssh maria_dev@sandbox-hdp.hoziprtonworks.com -p 2222
+    ```
+    
+4. Download and extract the DBLP dataset.
+    
+    ```
+    wget https://dblp.uni-trier.de/xml/dblp.xml.gz
+    
+    gzip -d dblp.xml.gz
+    ```
+    
+5. Create input and output directories.
+    
+    ```
+    hdfs dfs -mkdir -p /user/maria_dev/input
+    
+    hdfs dfs -mkdir -p /user/maria_dev/output
+    ```
+    
+6. Copy the DBLP dataset into the input directory.
+    
+    ```
+    hdfs dfs -put dblp.xml /user/maria_dev/input
+    ```
+    
+7. Run the MapReduce job.
+    
+    ```
+    hadoop jar Shyam_Patel_hw2-assembly-0.1.jar /user/maria_dev/input /user/maria_dev/output
+    ```
+    
+8. Copy the chart outputs into the output directory.
+    
+    ```
+    hdfs dfs -put co-authors.html /user/maria_dev/output
+    
+    hdfs dfs -put journals.html /user/maria_dev/output
+    
+    hdfs dfs -put conferences.html /user/maria_dev/output
+    
+    hdfs dfs -put years.html /user/maria_dev/output
+    ```
+    
 
 ## Tests
 This project includes 8 unit tests based on the [ScalaTest](http://www.scalatest.org) testing framework, which are located in the project's `test/scala` directory and include:
