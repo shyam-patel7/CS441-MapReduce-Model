@@ -1,62 +1,83 @@
 # HW2: MapReduce Model for Parallel Processing of DBLP Dataset
 ### Description: gain experience with the map/reduce computational model.
 This is a homework assignment for CS441 at the University of Illinois at Chicago.
-This project is uses the
+This project is utilizes the [Apache Hadoop 3.2.1](http://hadoop.apache.org) framework to run a MapReduce job on the DBLP computer science bibliography dataset in XML format.
 
 ## Background
-Each simulation embodies the Platform as a Service (PaaS) model and consists of one datacenter and two brokers.
-The properties are largely kept equivalent to more effectively observe changes in results.
+The outputs of the job provide information about authors, conferences, journals, venues (e.g., articles, conferences, books, PhD theses, Master’s theses), numbers of co-authors, years of publications, and numbers of publications produced at various events and by respective journals.
+An authorship score is assigned to each author, which is used to rank the top 100 authors and the bottom 100 authors of the entire dataset.
+Head authors are granted a raise in their scores for their contributions to the publications, whereas tail authors’ scores are reduced by the same amount.
 
-- **datacenter1** has an x86 system architecture and uses the Linux operating system and Xen virtual machine monitor. The datacenter is based in the UTC-5:00 time zone. The cost per CPU is $3.50, the cost per memory is $0.05, and the cost per storage is 0.1Â¢.
-- **datacenter1** hosts two host machines.
-    - **host1** is dual-core and has 2 GB of RAM, 10 GB of bandwidth, and 1 TB of storage.
-    - **host1** can process 3 billion instructions per second.
-    - **host2** is quad-core and has 4 GB of RAM, 10 GB of bandwidth, and 1 TB of storage.
-    - **host2** can process 4 billion instructions per second.
-- **broker1** has three virtual machines, each of which has 1 vCPU, 512 MB of RAM, 1 GB of bandwidth, and an image size of 10 GB. Each VM can process 1 billion instructions per second.
-- **broker2** has two virtual machines, each of which has 2 vCPU, 1 GB of RAM, 1 GB of bandwidth, and an image size of 10 GB. Each VM can process 2 billion instructions per second.
-- **broker1** and **broker2** are tasked with processing 15 cloudlets each, whose lengths vary between 300 billion and 600 billion instructions. Each cloudlet requires one CPU and has a size of 300 bytes.
-- In **simulation #1**, all virtual machines utilize a time-shared cloudlet scheduler policy, in which resources are shared among cloudlets.
-- In **simulation #2**, all virtual machines utilize a space-shared cloudlet scheduler policy, in which each cloudlet is given access to a VM exclusively until its execution completes.
-- In **simulation #3**, all virtual machines utilize a space-shared cloudlet scheduler policy, and the MapReduce framework is implemented to process cloudlets in parallel.
+The full dataset is located at the [DBLP](https://dblp.uni-trier.de/xml) website.
+First, the XML dataset is split into smaller subsets, which are sent to an equivalent number of mappers for processing.
+At this stage, key—value pairs are formed of the Hadoop I/O types *Text* and *FloatArrayWritable*, respectively.
+The Hadoop types are encoded in the UTF-8 Unicode standard and are utilized by the Hadoop MapReduce framework as they provide built-in methods for serialization and deserialization between map and reduce tasks.
+This becomes important in terms of efficiency when hundreds of thousands of key—value pairs are emitted through various processes running in parallel.
+*FloatArrayWritable* is a custom type that extends the *ArrayWritable* class, which encapsulates an array of type *Writable*.
+In this case, type *FloatWritable* was chosen as it provides adequate precision for holding authorship scores and median and average numbers of co-authors, while maintaining a similar expense in size (e.g., in bytes) as type *IntWritable*.
 
 ## Running
-To successfully run this project, Java 8 JDK (version 1.8 or higher) and [sbt](https://docs.scala-lang.org/getting-started/sbt-track/getting-started-with-scala-and-sbt-on-the-command-line.html) are required. [IntelliJ IDEA](https://www.jetbrains.com/idea) is highly recommended. The following are two ways to run this project.
+To successfully run this project, the [Hortonworks Data Platform (HDP)](https://www.cloudera.com/downloads/hortonworks-sandbox.html) on Sandbox with Apache Hadoop, [VMware](https://my.vmware.com/en/web/vmware/downloads) virtualization software, [IntelliJ IDEA](https://www.jetbrains.com/idea), [sbt](https://docs.scala-lang.org/getting-started/sbt-track/getting-started-with-scala-and-sbt-on-the-command-line.html) and [Java 8 JDK](https://www.oracle.com/technetwork/java/javase/downloads/index.html) (version 1.8 or higher) are required.
 
-1. To run this project on Terminal, or in IntelliJ IDEA's Terminal tool window, enter the following commands:
-    - `cd` into the `homework1` project root directory, and
-    - `sbt clean run` to (1) remove all previously generated files from the target directory, (2) compile source code files located in the project's `src/main/scala` directory, and (3) run the application.
-2. To run this project directly on the sbt shell in IntelliJ IDEA, enter the following commands:
-    - `clean` to remove all previously generated files from the target directory, and
-    - `run` to compile source code files located in the project's `src/main/scala` directory and run the application.
+1. From the project root directory, enter the following Terminal command to run all tests and assemble the JAR:
+
+        sbt clean assembly
+
+2. Start the HDP sandbox. Then, enter the following command in Terminal to transfer the JAR into the home directory.
+
+        scp -P 2222 target/scala-2.13/Shyam_Patel_hw2-assembly-0.1.jar maria_dev@sandbox-hdp.hoziprtonworks.com:~/
+
+3. SSH into the HDP sandbox.
+
+        ssh maria_dev@sandbox-hdp.hoziprtonworks.com -p 2222
+
+4. Download and extract the DBLP dataset.
+
+        wget https://dblp.uni-trier.de/xml/dblp.xml.gz
+        gzip -d dblp.xml.gz
+
+5. Create input and output directories.
+
+        hdfs dfs -mkdir -p /user/maria_dev/input
+        hdfs dfs -mkdir -p /user/maria_dev/output
+
+6. Copy the DBLP dataset into the input directory.
+
+        hdfs dfs -put dblp.xml /user/maria_dev/input
+
+7. Run the MapReduce job.
+
+        hadoop jar Shyam_Patel_hw2-assembly-0.1.jar /user/maria_dev/input /user/maria_dev/output
+
+8. Copy the chart outputs into the output directory.
+
+        hdfs dfs -put co-authors.html /user/maria_dev/output
+        hdfs dfs -put journals.html /user/maria_dev/output
+        hdfs dfs -put conferences.html /user/maria_dev/output
+        hdfs dfs -put years.html /user/maria_dev/output
+
+For quick removal of the chart outputs from the `/home/maria_dev` directory, use the `rm *.html` command.
 
 ## Tests
-This project includes 8 unit tests based on the [ScalaTest](http://www.scalatest.org) testing framework, which are located in the project's `test/scala` directory and include:
-
-1. CloudSim Initialization
-2. Loading Configuration
-3. Datacenter Creation
-4. Host Creation
-5. Broker Creation
-6. Virtual Machine Creation
-7. Cloudlet Creation
-8. MapReduce
-
-To run these simulation tests on Terminal, or in IntelliJ IDEA's Terminal tool window, simply `cd` into the `homework1` project root directory and enter the following command: `sbt test`.
+This project includes 14 unit tests based on the [ScalaTest](http://www.scalatest.org) testing framework, which are located in the project's `test/scala` directory and include app configuration and FloatArrayWritable creation tests.
+The tests will run automatically when the JAR is assembled. However, if you would like to run them again, simply `cd` into the project root directory and enter the following command: `sbt test`.
 
 ## MapReduce
-The MapReduce implementation in this project, enabled in simulation #3, is comprised of two phases.
+The MapReduce implementation in this project is comprised of 5 phases.
 
-1. During the **mapper** phase, cloudlets are clustered into varying numbers, between 2 and 9, of smaller subcloudlets. The lengths, sizes and output sizes of the subcloudlets are determined as a proportionate partition of those of each original cloudlet. Mapped subcloudlets originating from a single cloudlet are assigned to the same virtual machine in order to ensure that data locality is used to guide task allocation.
-2. During the **reducer** phase, the received cloudlets are aggregated to produce the final output. Received subcloudlets are reassigned to and grouped by their original cloudlet IDs. That is,
-    - The maximum of the finish times of the mapped subcloudlets is determined to be the finish time of the aggregated cloudlet,
-    - The minimum of the start times of the mapped subcloudlets is determined to be the start time of the aggregated cloudlet,
-    - The difference between the finish time and the start time is determined to be the CPU time of the aggregated cloudlet, and
-    - The sum of the costs of the mapped subcloudlets is determined to be the cost of the aggregated cloudlet.
+1. First, the **XmlInputFormat** class, which extends *TextInputFormat*, returns a custom record reader that uses the pre-defined start and end tags (e.g., located in *application.conf*) to scan through the input stream byte-by-byte to return publication records that are sent to mappers as key—value pairs, where keys are positions in the XML input file (e.g., type *LongWritable*), and values are the lines of text that contain the publication record (e.g., type *Text*).
+2. During the **mapper #1** phase, publication records are mapped into various key—value pairs. For each publication, the venue type is ascertained, as well as any authors or editors that are listed in the record. If author(s) is/are listed, their names are stored, through which their count is determined, and each co-author’s score is calculated using the formula described in the documentation. Then, each author is emitted as a key—value pair, where the key is the author’s name, and the value consists of the number of co-authors in the publication and the score the author received for his or her contribution. Similarly, if author(s) is/are listed, the venue is mapped as a key—value pair, where the key is the venue type and the value is the number of co-authors in the publication. If the venue type is ascertained to be a conference or a journal, key—value pairs with value one are emitted, where the keys represent the names of conferences or respective journals. In order to group numbers of co-authors into bins that can be used to plot a histogram that describes publications by co-authors, the number of co-authors in the publication are matched into a corresponding bin, which is mapped as the key in a key—value pair with value one. If the year of the publication is listed, it is matched into its corresponding decade bin, mapped as the key in a key—value pair with value one.
+3. During the **reducer** phase, key—value pairs emitted by mapper #1 are reduced. For author key—value pairs (e.g., where the key represents a single author), authorship score values are summed, and numbers of co-authors are merged into a single set. Similarly, for venue key—value pairs (e.g., where the key represents a single venue type), numbers of co-authors are merged. For all other key—value pairs, counts are summed and updated.
+4. During the **mapper #2** phase, key—value pairs that have already passed through the reducer phase undergo their final mappings. For both author and venue type key—value pairs, sets of numbers of co-authors are sorted and transformed into smaller sets that each contain the total number of publications, the maximum number of co-authors, the median number of co-authors, and the average number of co-authors. Author key—value pairs also retain cumulative authorship scores for each author, who are ranked into lists of the top 100 and the bottom 100 authors. For conference and journal key—value pairs, counts are also placed into bins. All final key—value pairs are emitted.
+5. Finally, the **CsvOutputFormat** class gets the default path for the output with *.csv* extension, sets its base name (e.g., results) and returns a custom record writer that writes key—value pairs into the data output stream with a comma separator in accordance with the CSV file format.
 
 ## Results
 
-###### Simulation #1: Time-shared cloudlet scheduler policy
+###### Co-authors
+![Co-authors](https://bitbucket.org/spate54/shyam_patel_hw2/raw/b715b085eee9d95e85d4f600ecd2bd36dbc0e581/images/co-authors.png)
+![Journals](https://bitbucket.org/spate54/shyam_patel_hw2/raw/cce070e7f6c68709a9f798507a6c9747b9a2725d/images/journals.png)
+![Conferences](https://bitbucket.org/spate54/shyam_patel_hw2/raw/cce070e7f6c68709a9f798507a6c9747b9a2725d/images/conferences.png)
+![Years](https://bitbucket.org/spate54/shyam_patel_hw2/raw/cce070e7f6c68709a9f798507a6c9747b9a2725d/images/years.png)
 ```
 ============================================= broker1 =============================================
 | Cloudlet | Status  | Datacenter | VM # | Time (ms) | Start     | Finish    | CPU    | Cost ($)  |
@@ -93,102 +114,5 @@ The MapReduce implementation in this project, enabled in simulation #3, is compr
 |    7     | SUCCESS |     1      |  1   |    891.51 |      0.10 |    891.61 | 50.45% |  3,120.30 |
 |    3     | SUCCESS |     1      |  1   |    904.81 |      0.10 |    904.91 | 49.49% |  3,166.83 |
 ```
-- Although **broker1** has more virtual machines (3 VMs as opposed to **broker2**'s 2 VMs), the degraded technical specs of those virtual machines result in reduced performance.
-    - The total execution time for **broker1** to process 15 cloudlets is 2,338.62 milliseconds.
-    - The total execution time for **broker2** to process 15 cloudlets is 904.81 milliseconds.
-    - The total cost for **broker1** to process 15 cloudlets is $105,161.38.
-    - The total cost for **broker2** to process 15 cloudlets is $40,659.05.
-    - *Takeaway:* Simply doubling the number of cores to 2 vCPU and the memory to 1 GB resulted in more than a **60% reduction in processing time and cost**. In other words, the number of cores and memory (RAM) in a virtual machine have an inversely proportionate relationship with CPU time and cost.
-- Although all 15 cloudlets share resources and start at the same time at 0.1 milliseconds, the cloudlets take much longer to complete execution as compared to what is observed in the subsequent simulation.
-    - *Takeaway:* Context-switching and saving state information of cloudlets as they are processing and paused to grant other cloudlets CPU access substantially reduces performance and increases cost.
 
-###### Simulation #2: Space-shared cloudlet scheduler policy
-```
-============================================= broker1 =============================================
-| Cloudlet | Status  | Datacenter | VM # | Time (ms) | Start     | Finish    | CPU    | Cost ($)  |
-|    3     | SUCCESS |     1      |  3   |    428.90 |      0.10 |    429.00 | 52.12% |  1,501.14 |
-|    1     | SUCCESS |     1      |  1   |    458.07 |      0.10 |    458.17 | 49.59% |  1,603.26 |
-|    2     | SUCCESS |     1      |  2   |    538.68 |      0.10 |    538.78 | 50.13% |  1,885.39 |
-|    6     | SUCCESS |     1      |  3   |    408.70 |    429.00 |    837.70 | 50.65% |  1,430.44 |
-|    5     | SUCCESS |     1      |  2   |    415.49 |    538.78 |    954.27 | 52.03% |  1,454.20 |
-|    4     | SUCCESS |     1      |  1   |    533.80 |    458.17 |    991.97 | 48.27% |  1,868.29 |
-|    9     | SUCCESS |     1      |  3   |    408.44 |    837.70 |  1,246.13 | 47.89% |  1,429.53 |
-|    8     | SUCCESS |     1      |  2   |    328.34 |    954.27 |  1,282.60 | 50.55% |  1,149.18 |
-|    7     | SUCCESS |     1      |  1   |    325.80 |    991.97 |  1,317.77 | 51.17% |  1,140.30 |
-|    12    | SUCCESS |     1      |  3   |    522.69 |  1,246.13 |  1,768.83 | 49.94% |  1,829.43 |
-|    11    | SUCCESS |     1      |  2   |    502.79 |  1,282.60 |  1,785.40 | 50.24% |  1,759.78 |
-|    10    | SUCCESS |     1      |  1   |    531.94 |  1,317.77 |  1,849.71 | 50.29% |  1,861.78 |
-|    15    | SUCCESS |     1      |  3   |    341.12 |  1,768.83 |  2,109.95 | 48.55% |  1,193.92 |
-|    13    | SUCCESS |     1      |  1   |    409.90 |  1,849.71 |  2,259.61 | 50.69% |  1,434.64 |
-|    14    | SUCCESS |     1      |  2   |    477.56 |  1,785.40 |  2,262.96 | 49.51% |  1,671.47 |
-============================================= broker2 =============================================
-| Cloudlet | Status  | Datacenter | VM # | Time (ms) | Start     | Finish    | CPU    | Cost ($)  |
-|    3     | SUCCESS |     1      |  1   |    179.56 |      0.10 |    179.66 | 51.64% |    628.47 |
-|    2     | SUCCESS |     1      |  2   |    210.94 |      0.10 |    211.04 | 48.95% |    738.30 |
-|    4     | SUCCESS |     1      |  2   |    245.91 |      0.10 |    246.01 | 47.96% |    860.68 |
-|    1     | SUCCESS |     1      |  1   |    265.76 |      0.10 |    265.86 | 49.47% |    930.15 |
-|    5     | SUCCESS |     1      |  1   |    206.08 |    179.66 |    385.74 | 47.75% |    721.27 |
-|    6     | SUCCESS |     1      |  2   |    232.41 |    211.04 |    443.45 | 51.02% |    813.43 |
-|    7     | SUCCESS |     1      |  1   |    211.60 |    265.86 |    477.46 | 53.39% |    740.60 |
-|    8     | SUCCESS |     1      |  2   |    263.73 |    246.01 |    509.73 | 49.02% |    923.04 |
-|    10    | SUCCESS |     1      |  2   |    170.91 |    443.45 |    614.37 | 52.20% |    598.20 |
-|    9     | SUCCESS |     1      |  1   |    243.06 |    385.74 |    628.80 | 48.72% |    850.71 |
-|    11    | SUCCESS |     1      |  1   |    168.87 |    477.46 |    646.32 | 53.71% |    591.04 |
-|    12    | SUCCESS |     1      |  2   |    190.56 |    509.73 |    700.29 | 48.40% |    666.95 |
-|    14    | SUCCESS |     1      |  2   |    198.01 |    614.37 |    812.38 | 51.83% |    693.04 |
-|    13    | SUCCESS |     1      |  1   |    193.55 |    628.80 |    822.35 | 51.39% |    677.42 |
-|    15    | SUCCESS |     1      |  1   |    220.81 |    646.32 |    867.13 | 54.32% |    772.83 |
-```
-- Although all 15 cloudlets start at varying times, the cloudlets complete execution ***much*** more rapidly.
-    - The total execution time for **broker1** to process 15 cloudlets is 2,262.86 milliseconds.
-    - The total execution time for **broker2** to process 15 cloudlets is 867.03 milliseconds.
-    - The total cost for **broker1** to process 15 cloudlets is $23.212.76.
-    - The total cost for **broker2** to process 15 cloudlets is $11,206.13.
-    - *Takeaway:* Context-switching and saving state information of cloudlets as they are processing and paused to grant other cloudlets CPU access reduces performance and substantially increases cost. Simply shifting from a time-shared cloudlet scheduler policy to one that is space-shared resulted in a 5% improvement in performance, but a **70-80% reduction in cost**.
-
-###### Simulation #3: Space-shared cloudlet scheduler policy with MapReduce
-```
-============================================= broker1 =============================================
-| Cloudlet | Status  | Datacenter | VM # | Time (ms) | Start     | Finish    | CPU    | Cost ($)  |
-|    1     | SUCCESS |     1      |  1   |    235.61 |      0.10 |    235.71 | 52.15% |    824.64 |
-|    3     | SUCCESS |     1      |  3   |    278.88 |      0.10 |    278.98 | 64.32% |    976.07 |
-|    2     | SUCCESS |     1      |  2   |    348.65 |      0.10 |    348.75 | 61.19% |  1,220.26 |
-|    6     | SUCCESS |     1      |  3   |    295.52 |    278.98 |    574.50 | 54.27% |  1,034.33 |
-|    5     | SUCCESS |     1      |  2   |    227.66 |    348.75 |    576.41 | 49.46% |    796.83 |
-|    4     | SUCCESS |     1      |  1   |    373.13 |    235.71 |    608.85 | 51.53% |  1,305.97 |
-|    9     | SUCCESS |     1      |  3   |    349.03 |    574.50 |    923.53 | 59.36% |  1,221.62 |
-|    7     | SUCCESS |     1      |  1   |    321.85 |    608.85 |    930.70 | 55.38% |  1,126.48 |
-|    8     | SUCCESS |     1      |  2   |    357.14 |    576.41 |    933.55 | 55.45% |  1,249.98 |
-|    11    | SUCCESS |     1      |  2   |    305.80 |    933.55 |  1,239.35 | 53.86% |  1,070.32 |
-|    10    | SUCCESS |     1      |  1   |    311.51 |    930.70 |  1,242.21 | 56.82% |  1,090.29 |
-|    12    | SUCCESS |     1      |  3   |    343.12 |    923.53 |  1,266.65 | 56.25% |  1,200.91 |
-|    14    | SUCCESS |     1      |  2   |    267.57 |  1,239.35 |  1,506.93 | 54.95% |    936.51 |
-|    15    | SUCCESS |     1      |  3   |    319.32 |  1,266.65 |  1,585.97 | 55.51% |  1,117.62 |
-|    13    | SUCCESS |     1      |  1   |    411.93 |  1,242.21 |  1,654.14 | 48.13% |  1,441.76 |
-============================================= broker2 =============================================
-| Cloudlet | Status  | Datacenter | VM # | Time (ms) | Start     | Finish    | CPU    | Cost ($)  |
-|    2     | SUCCESS |     1      |  2   |     67.10 |      0.10 |     67.20 | 64.41% |    423.91 |
-|    1     | SUCCESS |     1      |  1   |     81.94 |      0.10 |     82.04 | 60.74% |    502.87 |
-|    4     | SUCCESS |     1      |  2   |     93.75 |     54.12 |    147.87 | 53.89% |    569.17 |
-|    3     | SUCCESS |     1      |  1   |    114.03 |     61.83 |    175.86 | 60.25% |    583.69 |
-|    6     | SUCCESS |     1      |  2   |     93.19 |    136.07 |    229.26 | 57.49% |    537.58 |
-|    5     | SUCCESS |     1      |  1   |    115.67 |    134.78 |    250.46 | 57.40% |    539.24 |
-|    8     | SUCCESS |     1      |  2   |     89.38 |    208.27 |    297.66 | 56.58% |    525.77 |
-|    7     | SUCCESS |     1      |  1   |    106.40 |    214.26 |    320.66 | 49.97% |    556.44 |
-|    10    | SUCCESS |     1      |  2   |     79.30 |    290.10 |    369.40 | 58.48% |    456.00 |
-|    9     | SUCCESS |     1      |  1   |     85.77 |    303.04 |    388.81 | 57.85% |    526.92 |
-|    11    | SUCCESS |     1      |  1   |     88.67 |    385.44 |    474.11 | 54.29% |    594.70 |
-|    12    | SUCCESS |     1      |  2   |    126.51 |    348.64 |    475.15 | 53.85% |    631.16 |
-|    14    | SUCCESS |     1      |  2   |    112.14 |    423.22 |    535.36 | 58.28% |    583.62 |
-|    13    | SUCCESS |     1      |  1   |     74.60 |    470.06 |    544.66 | 51.38% |    488.66 |
-|    15    | SUCCESS |     1      |  1   |     83.77 |    539.13 |    622.90 | 53.02% |    448.27 |
-```
-- MapReduce further improves performance and cost measures.
-    - The total execution time for **broker1** to process 15 cloudlets is 1,654.04 milliseconds.
-    - The total execution time for **broker2** to process 15 cloudlets is 662.80 milliseconds.
-    - The total cost for **broker1** to process 15 cloudlets is $16,613.58.
-    - The total cost for **broker2** to process 15 cloudlets is $7,968.01.
-    - Peak CPU utilization increased by up to 10%.
-    - *Takeaway:* Dividing data tasks into smaller ones, grouping them via data locality and allowing them to run in parallel results in a **30-40% improvement in performance and cost**.
-
-To view images and analysis, see `Documentation.pdf` located in the `homework1` project root directory.
+To view images and analysis, see `Documentation.pdf` located in the project root directory.
