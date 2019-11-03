@@ -125,4 +125,111 @@ As can be observed by this histogram, the great majority of conferences have pub
 | phD theses      |    74115 |    3 |    1.0 |     1.0 |
 ```
 
+**Figure 4.** The top 100 authors by authorship score in descending order.
+```
+=============================== Top 100 Authors ===============================
+| Score   | Author                         | Num Pub | Max | Median | Average |
+| 443.007 | Ronald R. Yager                |     624 |   7 |    1.0 |     1.9 |
+| 441.554 | H. Vincent Poor                |    1785 |  13 |    4.0 |     3.6 |
+| 403.234 | Witold Pedrycz                 |    1076 |  12 |    3.0 |     3.1 |
+| 395.963 | Irith Pomeranz                 |     638 |   6 |    2.0 |     2.2 |
+| 371.713 | Wei Wang                       |    1310 |  96 |    4.0 |     4.4 |
+| 359.400 | Wei Li                         |    1226 |  96 |    4.0 |     4.6 |
+| 357.400 | Wei Zhang                      |    1303 | 105 |    4.0 |     4.5 |
+| 354.521 | Yu Zhang                       |    1146 |  25 |    4.0 |     4.3 |
+| 354.017 | T. D. Wilson 0001              |     373 |   5 |    1.0 |     1.1 |
+| 349.862 | Mohamed-Slim Alouini           |    1409 |  14 |    4.0 |     3.6 |
+| 349.707 | Elisa Bertino                  |    1032 |  20 |    3.0 |     3.5 |
+| 344.506 | Chin-Chen Chang 0001           |     914 |   8 |    3.0 |     3.0 |
+| 336.005 | Xin Wang                       |    1139 |  17 |    4.0 |     4.3 |
+| 330.204 | Philip S. Yu                   |    1355 |  14 |    4.0 |     4.0 |
+| 327.095 | Vladik Kreinovich              |     656 |  11 |    2.0 |     2.6 |
+| 319.781 | David Eppstein                 |     590 |  22 |    2.0 |     2.8 |
+| 314.104 | Joseph Y. Halpern              |     565 |   6 |    2.0 |     2.2 |
+| 313.308 | Noga Alon                      |     627 |   9 |    3.0 |     3.0 |
+| 305.264 | Yang Liu                       |    1060 |  45 |    4.0 |     4.5 |
+| 304.780 | Yong Wang                      |     903 | 105 |    4.0 |     4.1 |
+| 304.410 | Jun Wang                       |    1084 |  59 |    4.0 |     4.5 |
+| 303.210 | Jing Li                        |    1060 | 155 |    4.0 |     4.6 |
+| 303.086 | Li Zhang                       |     988 |  23 |    4.0 |     4.3 |
+| 302.503 | Azzedine Boukerche             |     825 |   9 |    3.0 |     3.2 |
+| 301.285 | Jing Wang                      |    1012 |  26 |    4.0 |     4.3 |
+| 297.860 | Lei Zhang                      |    1063 | 105 |    4.0 |     4.5 |
+| 289.959 | Lei Wang                       |    1086 |  26 |    4.0 |     4.5 |
+| 289.271 | Wil M. P. van der Aalst        |     783 |  77 |    3.0 |     3.6 |
+| 288.575 | Moshe Y. Vardi                 |     646 |  12 |    3.0 |     2.7 |
+| 283.950 | Lajos Hanzo                    |    1243 |  15 |    4.0 |     3.9 |
+| 277.174 | Jie Wu 0001                    |     819 |  21 |    3.0 |     3.3 |
+| 273.277 | Victor C. M. Leung             |    1156 |  32 |    4.0 |     3.9 |
+| 272.867 | Jing Zhang                     |     916 |  19 |    4.0 |     4.2 |
+| 271.734 | Georgios B. Giannakis          |     906 |   8 |    3.0 |     2.9 |
+| 270.643 | Robert L. Glass                |     288 |  15 |    1.0 |     1.3 |
+| 269.099 | Oded Goldreich 0001            |     455 |   7 |    2.0 |     2.4 |
+| 266.840 | Yan Zhang                      |     941 |  50 |    4.0 |     4.4 |
+| 262.321 | Hai Jin 0001                   |    1100 |  25 |    4.0 |     4.6 |
+| 259.014 | Nadia Magnenat-Thalmann        |     613 |  17 |    3.0 |     3.4 |
+| 257.605 | Thomas S. Huang                |    1032 |  77 |    4.0 |     4.0 |
+| 253.910 | Kang G. Shin                   |     757 |  13 |    2.0 |     2.8 |
+| 252.446 | Edwin R. Hancock               |     787 |   9 |    2.0 |     2.8 |
+| 251.008 | Xin Li                         |     862 |  20 |    4.0 |     4.5 |
+| 250.796 | Loet Leydesdorff               |     460 |  10 |    2.0 |     2.3 |
+| 249.923 | Jiawei Han 0001                |     948 |  22 |    4.0 |     4.4 |
+| 249.920 | Peter G. Neumann               |     291 |  21 |    1.0 |     2.0 |
+| 249.874 | Yan Li                         |     858 | 155 |    4.0 |     4.8 |
+| 249.000 | Diane Crawford                 |     249 |   1 |    1.0 |     1.0 |
+| 247.488 | Didier Dubois                  |     566 |  34 |    3.0 |     3.0 |
+| 247.223 | Wei Liu                        |     856 |  19 |    4.0 |     4.3 |
+| 246.466 | Ajith Abraham                  |     896 |  11 |    4.0 |     3.8 |
+| 246.285 | Wei Chen                       |     896 |  23 |    4.0 |     4.6 |
+| 246.153 | Jun Zhang                      |     848 |  15 |    4.0 |     4.2 |
+| 243.052 | Hui Li                         |     857 |  35 |    4.0 |     4.3 |
+| 242.553 | Vishwani D. Agrawal            |     427 |   7 |    2.0 |     2.2 |
+| 242.394 | Yang Li                        |     842 |  33 |    4.0 |     4.5 |
+| 242.075 | Norman C. Beaulieu             |     604 |   7 |    2.0 |     2.3 |
+| 241.739 | Grzegorz Rozenberg             |     588 |  13 |    3.0 |     2.7 |
+| 241.278 | Li Li                          |     821 |  20 |    4.0 |     4.4 |
+| 238.695 | Jian Wang                      |     826 |  21 |    4.0 |     4.5 |
+| 238.672 | Sajal K. Das 0001              |     792 |  21 |    3.0 |     3.5 |
+| 237.877 | Yang Yang                      |     854 |  18 |    4.0 |     4.5 |
+| 237.762 | Jack J. Dongarra               |     849 |  65 |    4.0 |     4.5 |
+| 236.448 | Xiang Li                       |     835 |  36 |    4.0 |     4.3 |
+| 234.305 | Anil K. Jain 0001              |     702 |  12 |    3.0 |     3.0 |
+| 233.296 | Ying Li                        |     779 | 105 |    4.0 |     4.4 |
+| 233.099 | Wen Gao 0001                   |    1205 |  19 |    5.0 |     4.7 |
+| 230.825 | Neri Merhav                    |     370 |   5 |    2.0 |     1.8 |
+| 229.836 | Jian Li                        |     789 |  29 |    4.0 |     4.3 |
+| 229.270 | Christoph Meinel               |     709 |   9 |    3.0 |     3.1 |
+| 228.874 | Jian Zhang                     |     774 |  26 |    4.0 |     4.4 |
+| 226.770 | Yan Wang                       |     786 |  39 |    4.0 |     4.4 |
+| 225.008 | David J. Evans 0001            |     488 |   5 |    2.0 |     2.3 |
+| 223.058 | Ying Zhang                     |     772 | 112 |    4.0 |     4.5 |
+| 222.992 | Rama Chellappa                 |     757 |  12 |    3.0 |     3.3 |
+| 222.775 | Holger Boche                   |     530 |   5 |    2.0 |     2.6 |
+| 221.906 | Robert W. Heath Jr.            |     789 |  21 |    3.0 |     3.4 |
+| 220.542 | Shusaku Tsumoto                |     416 |  14 |    2.0 |     2.5 |
+| 219.751 | Alfredo Cuzzocrea              |     464 |  24 |    3.0 |     3.2 |
+| 219.694 | Robert Schober                 |     860 |  12 |    3.0 |     3.7 |
+| 219.469 | Elena Maceviciute              |     231 |  19 |    1.0 |     1.2 |
+| 218.811 | Leonard Barolli                |    1022 |  13 |    5.0 |     4.7 |
+| 218.751 | Yong Liu                       |     711 |  17 |    4.0 |     4.3 |
+| 218.164 | Krishnendu Chakrabarty         |     691 |  45 |    3.0 |     3.4 |
+| 217.004 | Tao Wang                       |     717 |  26 |    4.0 |     4.4 |
+| 216.191 | Luca Benini                    |     990 |  37 |    4.0 |     4.9 |
+| 215.837 | David Alan Grier               |     224 |   5 |    1.0 |     1.1 |
+| 215.681 | Dacheng Tao                    |     971 |  77 |    4.0 |     4.5 |
+| 215.286 | C.-C. Jay Kuo                  |     806 |  14 |    3.0 |     3.4 |
+| 215.059 | Sudhakar M. Reddy              |     633 |  11 |    2.0 |     2.8 |
+| 214.925 | Hao Wang                       |     739 |  32 |    4.0 |     4.4 |
+| 214.575 | Azriel Rosenfeld               |     449 |   6 |    2.0 |     2.3 |
+| 214.543 | Harold Joseph Highland         |     219 |   8 |    1.0 |     1.1 |
+| 213.778 | Yu Liu                         |     734 |  13 |    4.0 |     4.4 |
+| 213.289 | Manfred Broy                   |     332 |  34 |    2.0 |     2.6 |
+| 212.512 | Saharon Shelah                 |     403 |   5 |    2.0 |     1.9 |
+| 212.407 | Ian F. Akyildiz                |     512 |  22 |    3.0 |     3.0 |
+| 212.245 | Erol Gelenbe                   |     419 |  25 |    2.0 |     2.8 |
+| 210.996 | Christos H. Papadimitriou      |     452 |  11 |    2.0 |     2.7 |
+| 210.965 | Yi Zhang                       |     784 |  43 |    4.0 |     4.6 |
+```
+
+
 To view images and analysis, see `Documentation.pdf` located in the project root directory.
