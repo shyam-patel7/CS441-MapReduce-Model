@@ -18,16 +18,16 @@ This project is utilizes the [Apache Hadoop 3.2.1](http://hadoop.apache.org) fra
 - In **simulation #3**, all virtual machines utilize a space-shared cloudlet scheduler policy, and the MapReduce framework is implemented to process cloudlets in parallel.
 
 ## Running
-To successfully run this project, the [Hortonworks Data Platform (HDP)](https://www.cloudera.com/downloads/hortonworks-sandbox.html) on Sandbox with Apache Hadoop, [VMware](https://my.vmware.com/en/web/vmware/downloads) or [VirtualBox](https://www.virtualbox.org/wiki/Downloads) virtualization software, [sbt](https://docs.scala-lang.org/getting-started/sbt-track/getting-started-with-scala-and-sbt-on-the-command-line.html) and [Java 8 JDK](https://www.oracle.com/technetwork/java/javase/downloads/index.html) (version 1.8 or higher) are required.
+To successfully run this project, the [Hortonworks Data Platform (HDP)](https://www.cloudera.com/downloads/hortonworks-sandbox.html) on Sandbox with Apache Hadoop, [VMware](https://my.vmware.com/en/web/vmware/downloads) virtualization software, [IntelliJ IDEA](https://www.jetbrains.com/idea), [sbt](https://docs.scala-lang.org/getting-started/sbt-track/getting-started-with-scala-and-sbt-on-the-command-line.html) and [Java 8 JDK](https://www.oracle.com/technetwork/java/javase/downloads/index.html) (version 1.8 or higher) are required.
 
-1. From the project root directory, enter the following Terminal command to (1) run all tests and (2) assemble the necessary JAR:
+1. From the project root directory, enter the following Terminal command to run all tests and assemble the JAR:
 
         sbt clean assembly
-    
+
 2. Start the HDP sandbox. Then, enter the following command in Terminal to transfer the JAR into the home directory.
 
         scp -P 2222 target/scala-2.13/Shyam_Patel_hw2-assembly-0.1.jar maria_dev@sandbox-hdp.hoziprtonworks.com:~/
-    
+
 3. SSH into the HDP sandbox.
 
         ssh maria_dev@sandbox-hdp.hoziprtonworks.com -p 2222
@@ -41,15 +41,15 @@ To successfully run this project, the [Hortonworks Data Platform (HDP)](https://
 
         hdfs dfs -mkdir -p /user/maria_dev/input
         hdfs dfs -mkdir -p /user/maria_dev/output
-    
+
 6. Copy the DBLP dataset into the input directory.
 
         hdfs dfs -put dblp.xml /user/maria_dev/input
-    
+
 7. Run the MapReduce job.
 
         hadoop jar Shyam_Patel_hw2-assembly-0.1.jar /user/maria_dev/input /user/maria_dev/output
-    
+
 8. Copy the chart outputs into the output directory.
 
         hdfs dfs -put co-authors.html /user/maria_dev/output
@@ -59,18 +59,8 @@ To successfully run this project, the [Hortonworks Data Platform (HDP)](https://
 
 
 ## Tests
-This project includes 8 unit tests based on the [ScalaTest](http://www.scalatest.org) testing framework, which are located in the project's `test/scala` directory and include:
-
-1. CloudSim Initialization
-2. Loading Configuration
-3. Datacenter Creation
-4. Host Creation
-5. Broker Creation
-6. Virtual Machine Creation
-7. Cloudlet Creation
-8. MapReduce
-
-To run these simulation tests on Terminal, or in IntelliJ IDEA's Terminal tool window, simply `cd` into the `homework1` project root directory and enter the following command: `sbt test`.
+This project includes 14 unit tests based on the [ScalaTest](http://www.scalatest.org) testing framework, which are located in the project's `test/scala` directory and include app configuration and FloatArrayWritable creation tests.
+To run these tests on Terminal, or in IntelliJ IDEA's Terminal tool window, simply `cd` into the `homework2` project root directory and enter the following command: `sbt test`.
 
 ## MapReduce
 The MapReduce implementation in this project, enabled in simulation #3, is comprised of two phases.
