@@ -67,7 +67,6 @@ object Utils {
   val v_labels:    List[String]       = conf.getStringList("output.venue.labels").asScala.toList
   val v_names:     List[String]       = conf.getStringList("output.venue.names").asScala.toList
   val b_values:    String             = conf.getString("output.bin.values")
-  val b_yt:        String             = conf.getString("output.bin.y_title")
   val b1_title:    String             = conf.getString("output.bin1.title")
   val b2_title:    String             = conf.getString("output.bin2.title")
   val b3_title:    String             = conf.getString("output.bin3.title")
@@ -80,6 +79,10 @@ object Utils {
   val b2_xt:       String             = conf.getString("output.bin2.x_title")
   val b3_xt:       String             = conf.getString("output.bin3.x_title")
   val b4_xt:       String             = conf.getString("output.bin4.x_title")
+  val b1_yt:       String             = conf.getString("output.bin1.y_title")
+  val b2_yt:       String             = conf.getString("output.bin2.y_title")
+  val b3_yt:       String             = conf.getString("output.bin3.y_title")
+  val b4_yt:       String             = conf.getString("output.bin4.y_title")
   val b1_path:     String             = conf.getString("output.bin1.path")
   val b2_path:     String             = conf.getString("output.bin2.path")
   val b3_path:     String             = conf.getString("output.bin3.path")
@@ -159,11 +162,11 @@ object Utils {
     s1.close; s2.close                                                                    // close input stream
 
     // create charts
-    log.info(s"Creating charts: $b1_path, $b2_path, $b3_path, $b4_path")
-    createChart(b1, b1_pt, b1_xt, b_yt, b1_path)                                          //  (b1) co-authors,
-    createChart(b4, b4_pt, b4_xt, b_yt, b4_path)                                          //  (b4) journals,
-    createChart(b3, b3_pt, b3_xt, b_yt, b3_path)                                          //  (b3) conferences,
-    createChart(b2, b2_pt, b2_xt, b_yt, b2_path)                                          //  (b2) years
+    log.info(s"Creating charts: $b1_path, $b4_path, $b3_path, $b2_path")
+    createChart(b1, b1_pt, b1_xt, b1_yt, b1_path)                                         //  (b1) co-authors,
+    createChart(b4, b4_pt, b4_xt, b4_yt, b4_path)                                         //  (b4) journals,
+    createChart(b3, b3_pt, b3_xt, b3_yt, b3_path)                                         //  (b3) conferences,
+    createChart(b2, b2_pt, b2_xt, b2_yt, b2_path)                                         //  (b2) years
 
     // print results
     log.info("Tabulating results...")
