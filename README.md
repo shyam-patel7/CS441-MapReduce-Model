@@ -18,14 +18,19 @@ This project is utilizes the [Apache Hadoop 3.2.1](http://hadoop.apache.org) fra
 - In **simulation #3**, all virtual machines utilize a space-shared cloudlet scheduler policy, and the MapReduce framework is implemented to process cloudlets in parallel.
 
 ## Running
-To successfully run this project, Java 8 JDK (version 1.8 or higher) and [sbt](https://docs.scala-lang.org/getting-started/sbt-track/getting-started-with-scala-and-sbt-on-the-command-line.html) are required. [IntelliJ IDEA](https://www.jetbrains.com/idea) is highly recommended. The following are two ways to run this project.
+To successfully run this project, the [Hortonworks Data Platform (HDP)](https://www.cloudera.com/downloads/hortonworks-sandbox.html) on Sandbox with Apache Hadoop, [VMware](https://my.vmware.com/en/web/vmware/downloads) or [VirtualBox](https://www.virtualbox.org/wiki/Downloads) virtualization software, [sbt](https://docs.scala-lang.org/getting-started/sbt-track/getting-started-with-scala-and-sbt-on-the-command-line.html) and [Java 8 JDK](https://www.oracle.com/technetwork/java/javase/downloads/index.html) (version 1.8 or higher) are required.
 
-1. To run this project on Terminal, or in IntelliJ IDEA's Terminal tool window, enter the following commands:
-    - `cd` into the `homework1` project root directory, and
-    - `sbt clean run` to (1) remove all previously generated files from the target directory, (2) compile source code files located in the project's `src/main/scala` directory, and (3) run the application.
-2. To run this project directly on the sbt shell in IntelliJ IDEA, enter the following commands:
-    - `clean` to remove all previously generated files from the target directory, and
-    - `run` to compile source code files located in the project's `src/main/scala` directory and run the application.
+1. From the project root directory, enter the following Terminal command to (1) run all tests and (2) assemble the JAR necessary to run the program on the sandbox:
+    
+    ```
+    sbt clean assembly
+    ```
+    
+2. Start the HDP sandbox. Then, enter the following command in Terminal to transfer the JAR into the home directory.
+
+    ```
+    scp -P 2222 target/scala-2.13/Shyam_Patel_hw2-assembly-0.1.jar maria_dev@sandbox-hdp.hoziprtonworks.com:~/
+    ```
 
 ## Tests
 This project includes 8 unit tests based on the [ScalaTest](http://www.scalatest.org) testing framework, which are located in the project's `test/scala` directory and include:
@@ -54,7 +59,10 @@ The MapReduce implementation in this project, enabled in simulation #3, is compr
 ## Results
 
 ###### Co-authors
-![coauthors](https://bitbucket.org/spate54/shyam_patel_hw2/raw/b715b085eee9d95e85d4f600ecd2bd36dbc0e581/images/co-authors.png)
+![Co-authors](https://bitbucket.org/spate54/shyam_patel_hw2/raw/b715b085eee9d95e85d4f600ecd2bd36dbc0e581/images/co-authors.png)
+![Journals](https://bitbucket.org/spate54/shyam_patel_hw2/raw/cce070e7f6c68709a9f798507a6c9747b9a2725d/images/journals.png)
+![Conferences](https://bitbucket.org/spate54/shyam_patel_hw2/raw/cce070e7f6c68709a9f798507a6c9747b9a2725d/images/conferences.png)
+![Years](https://bitbucket.org/spate54/shyam_patel_hw2/raw/cce070e7f6c68709a9f798507a6c9747b9a2725d/images/years.png)
 ```
 ============================================= broker1 =============================================
 | Cloudlet | Status  | Datacenter | VM # | Time (ms) | Start     | Finish    | CPU    | Cost ($)  |
@@ -92,4 +100,4 @@ The MapReduce implementation in this project, enabled in simulation #3, is compr
 |    3     | SUCCESS |     1      |  1   |    904.81 |      0.10 |    904.91 | 49.49% |  3,166.83 |
 ```
 
-To view images and analysis, see `Documentation.pdf` located in the `homework2` project root directory.
+To view images and analysis, see `Documentation.pdf` located in the `Shyam_Patel_hw2` project root directory.
