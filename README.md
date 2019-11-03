@@ -3,6 +3,7 @@
 This is a homework assignment for CS441 at the University of Illinois at Chicago.
 This project is utilizes the [Apache Hadoop 3.2.1](http://hadoop.apache.org) framework to run a MapReduce job on the DBLP computer science bibliography dataset in XML format.
 
+
 ## Background
 The outputs of the job provide information about authors, conferences, journals, venues (e.g., articles, conferences, books, PhD theses, Master’s theses), numbers of co-authors, years of publications, and numbers of publications produced at various events and by respective journals.
 An authorship score is assigned to each author, which is used to rank the top 100 authors and the bottom 100 authors of the entire dataset.
@@ -15,6 +16,7 @@ The Hadoop types are encoded in the UTF-8 Unicode standard and are utilized by t
 This becomes important in terms of efficiency when hundreds of thousands of keyóvalue pairs are emitted through various processes running in parallel.
 *FloatArrayWritable* is a custom type that extends the *ArrayWritable* class, which encapsulates an array of type *Writable*.
 In this case, type *FloatWritable* was chosen as it provides adequate precision for holding authorship scores and median and average numbers of co-authors, while maintaining a similar expense in size (e.g., in bytes) as type *IntWritable*.
+
 
 ## Running
 To successfully run this project, the [Hortonworks Data Platform (HDP)](https://www.cloudera.com/downloads/hortonworks-sandbox.html) on Sandbox with Apache Hadoop, [VMware](https://my.vmware.com/en/web/vmware/downloads) virtualization software, [IntelliJ IDEA](https://www.jetbrains.com/idea), [sbt](https://docs.scala-lang.org/getting-started/sbt-track/getting-started-with-scala-and-sbt-on-the-command-line.html) and [Java 8 JDK](https://www.oracle.com/technetwork/java/javase/downloads/index.html) (version 1.8 or higher) are required.
@@ -58,9 +60,11 @@ To successfully run this project, the [Hortonworks Data Platform (HDP)](https://
 
 For quick removal of the chart outputs from the `/home/maria_dev` directory, use the `rm *.html` command.
 
+
 ## Tests
 This project includes 14 unit tests based on the [ScalaTest](http://www.scalatest.org) testing framework, which are located in the project's `test/scala` directory and include app configuration and FloatArrayWritable creation tests.
 The tests will run automatically when the JAR is assembled. However, if you would like to run them again, simply `cd` into the project root directory and enter the following command: `sbt test`.
+
 
 ## MapReduce
 The MapReduce implementation in this project is comprised of 5 phases.
@@ -70,6 +74,7 @@ The MapReduce implementation in this project is comprised of 5 phases.
 3. During the **reducer** phase, keyóvalue pairs emitted by mapper #1 are reduced. For author keyóvalue pairs (e.g., where the key represents a single author), authorship score values are summed, and numbers of co-authors are merged into a single set. Similarly, for venue keyóvalue pairs (e.g., where the key represents a single venue type), numbers of co-authors are merged. For all other keyóvalue pairs, counts are summed and updated.
 4. During the **mapper #2** phase, keyóvalue pairs that have already passed through the reducer phase undergo their final mappings. For both author and venue type keyóvalue pairs, sets of numbers of co-authors are sorted and transformed into smaller sets that each contain the total number of publications, the maximum number of co-authors, the median number of co-authors, and the average number of co-authors. Author keyóvalue pairs also retain cumulative authorship scores for each author, who are ranked into lists of the top 100 and the bottom 100 authors. For conference and journal keyóvalue pairs, counts are also placed into bins. All final keyóvalue pairs are emitted.
 5. Finally, the **CsvOutputFormat** class gets the default path for the output with *.csv* extension, sets its base name (e.g., results) and returns a custom record writer that writes keyóvalue pairs into the data output stream with a comma separator in accordance with the CSV file format.
+
 
 ## Results
 The results of the MapReduce job can be obtained using Ambari’s [Files View UI](http://sandbox-hdp.hoziprtonworks.com:8080). From the user’s output directory, select *results.csv* and the Plotly charts named *co-authors.html*, *conferences.html*, *journals.html* and *years.html*. Click Download.
@@ -93,10 +98,12 @@ The results of the MapReduce job can be obtained using Ambari’s [Files View UI](
 As can be observed in this histogram, the great majority of publications listed in the DBLP dataset (approaching 2.5 million) have between 2-3 co-authors. This is followed by publications that have 4-6
 co-authors (~1.3 million) and, subsequently, by publications that have a single co-author (~800k).
 
+
 ![Years](https://bitbucket.org/spate54/shyam_patel_hw2/raw/121942c864862d371e615c63bed1e5d457633213/images/years.png)
 As can be observed in this histogram, the great majority of publications have been published in the current decade (approaching 2.8 million). This is followed by the previous decade (~1.4 million). The clear trend is that the number of publications is more than doubling through each decade.
 
-**Figure 2.** The number of publications for each journal and conference in the dataset.
+
+**Figure 2.** The number of publications for each journal and each conference in the dataset.
 ```
 =========== Journals ===========   ========= Conferences ==========
 | Num Pub         | # Journals |   | Num Pub         | Num Conf   |
@@ -109,6 +116,7 @@ As can be observed in this histogram, the great majority of publications have be
 
 ![Journals](https://bitbucket.org/spate54/shyam_patel_hw2/raw/121942c864862d371e615c63bed1e5d457633213/images/journals.png)
 As can be observed in this histogram, the majority of journals have published between 1 and 199 publications. This is followed by journals that have published between 200 and 499 publications and, subsequently, by journals that have published between 500 and 1199 publications. The clear trend is that few journals have published a larger number of publications.
+
 
 ![Conferences](https://bitbucket.org/spate54/shyam_patel_hw2/raw/121942c864862d371e615c63bed1e5d457633213/images/conferences.png)
 As can be observed by this histogram, the great majority of conferences have published between 1 and 199 publications. This is followed by conferences that have published between 200 and 599 publications and, subsequently, by conferences that have published between 600 and 1199 publications. Similar to the trend observed in journals, we can see that few conferences have published a large number of publications.
@@ -124,6 +132,7 @@ As can be observed by this histogram, the great majority of conferences have pub
 | master's theses |       12 |    1 |    1.0 |     1.0 |
 | phD theses      |    74115 |    3 |    1.0 |     1.0 |
 ```
+
 
 **Figure 4.** The top 100 authors by authorship score in descending order.
 ```
@@ -229,6 +238,113 @@ As can be observed by this histogram, the great majority of conferences have pub
 | 212.245 | Erol Gelenbe                   |     419 |  25 |    2.0 |     2.8 |
 | 210.996 | Christos H. Papadimitriou      |     452 |  11 |    2.0 |     2.7 |
 | 210.965 | Yi Zhang                       |     784 |  43 |    4.0 |     4.6 |
+```
+
+
+**Figure 5.** The bottom 100 authors by authorship score in ascending order.
+```
+============================= Bottom 100 Authors ==============================
+| Score   | Author                         | Num Pub | Max | Median | Average |
+|   0.004 | Yutaka Nakachi                 |       1 | 264 |  264.0 |   264.0 |
+|   0.005 | Marcel Zoll                    |       2 | 287 |  287.0 |   287.0 |
+|   0.006 | Omar Zapata                    |       1 | 118 |  118.0 |   118.0 |
+|   0.006 | Álvaro Iglesias-Arias          |       1 | 155 |  155.0 |   155.0 |
+|   0.007 | K. Yates                       |       1 | 115 |  115.0 |   115.0 |
+|   0.007 | Yolanda Sestayo de la Cerra    |       2 | 287 |  287.0 |   287.0 |
+|   0.007 | Zexiong Cai                    |       1 | 139 |  139.0 |   139.0 |
+|   0.008 | Yong Song Gho                  |       1 |  95 |   95.0 |    95.0 |
+|   0.008 | Maryam Kavousi                 |       1 |  92 |   92.0 |    92.0 |
+|   0.008 | V. Reita                       |       1 | 119 |  119.0 |   119.0 |
+|   0.008 | Zahari Kassabov                |       1 | 118 |  118.0 |   118.0 |
+|   0.009 | R. D. Jackson                  |       1 | 115 |  115.0 |   115.0 |
+|   0.009 | Mark G. Aartsen                |       2 | 287 |  287.0 |   287.0 |
+|   0.009 | Valentin Bisson                |       1 | 112 |  112.0 |   112.0 |
+|   0.010 | Zhiyao Guo                     |       1 | 105 |  105.0 |   105.0 |
+|   0.010 | Nianhao Xie                    |       1 | 104 |  104.0 |   104.0 |
+|   0.010 | Timothy L. Thomas              |       1 | 102 |  102.0 |   102.0 |
+|   0.010 | Zhu L. Yang                    |       1 | 101 |  101.0 |   101.0 |
+|   0.010 | Vishwas Chitale                |       1 |  99 |   99.0 |    99.0 |
+|   0.010 | Susan J. Fisher                |       1 |  96 |   96.0 |    96.0 |
+|   0.011 | Young-Koo Jee                  |       1 |  95 |   95.0 |    95.0 |
+|   0.011 | Wendy Huntoon                  |       1 |  94 |   94.0 |    94.0 |
+|   0.011 | Wuxiang Xie                    |       1 |  92 |   92.0 |    92.0 |
+|   0.011 | J. Stuart B. Wyithe            |       1 |  67 |   67.0 |    67.0 |
+|   0.012 | Jerome Lauret                  |       1 |  86 |   86.0 |    86.0 |
+|   0.012 | Josie Li                       |       1 |  62 |   62.0 |    62.0 |
+|   0.012 | Camila Jaramillo               |       1 |  61 |   61.0 |    61.0 |
+|   0.013 | Ishan Yelurwar                 |       1 |  60 |   60.0 |    60.0 |
+|   0.013 | Tibor Kurca                    |       1 |  79 |   79.0 |    79.0 |
+|   0.013 | Yuri B. Schwartz               |       1 |  78 |   78.0 |    78.0 |
+|   0.013 | Rudolf Kuhn                    |       1 |  77 |   77.0 |    77.0 |
+|   0.013 | Roadmap Epigenomics Consortium |       1 |  96 |   96.0 |    96.0 |
+|   0.013 | Stacey Weber                   |       1 |  57 |   57.0 |    57.0 |
+|   0.013 | Y. C. Janardhan Reddy          |       1 |  75 |   75.0 |    75.0 |
+|   0.013 | The BrAPI consortium           |       1 |  56 |   56.0 |    56.0 |
+|   0.014 | Matthias W. Lorenz             |       1 |  92 |   92.0 |    92.0 |
+|   0.014 | Shengyin Zhu                   |       1 |  73 |   73.0 |    73.0 |
+|   0.014 | Anurag D. Yadav                |       1 |  54 |   54.0 |    54.0 |
+|   0.014 | Yu. M. Shatunov                |       1 |  71 |   71.0 |    71.0 |
+|   0.014 | Jason Yosinksi                 |       1 |  53 |   53.0 |    53.0 |
+|   0.014 | Vineet Sethia                  |       1 |  70 |   70.0 |    70.0 |
+|   0.014 | Zafer Yüksel                   |       1 |  69 |   69.0 |    69.0 |
+|   0.015 | Nick Langridge                 |       1 |  68 |   68.0 |    68.0 |
+|   0.015 | J. Ippolito                    |       1 |  51 |   51.0 |    51.0 |
+|   0.015 | Wayne Arcus                    |       1 |  67 |   67.0 |    67.0 |
+|   0.015 | Francois Le Diberder           |       1 |  50 |   50.0 |    50.0 |
+|   0.015 | Rashmi Vinayak                 |       1 |  66 |   66.0 |    66.0 |
+|   0.015 | Sanjay Kale                    |       1 |  65 |   65.0 |    65.0 |
+|   0.016 | Yee Koh                        |       1 |  64 |   64.0 |    64.0 |
+|   0.016 | Ramon Ray Gomez                |       1 |  47 |   47.0 |    47.0 |
+|   0.016 | Erik Velasco-Salido            |       2 | 155 |  129.5 |   129.5 |
+|   0.016 | Sookyoung Kwak                 |       1 |  62 |   62.0 |    62.0 |
+|   0.016 | Etienne Caron                  |       1 |  46 |   46.0 |    46.0 |
+|   0.016 | Zhenxing Ding                  |       1 |  61 |   61.0 |    61.0 |
+|   0.017 | Yogitha Chilukur               |       1 |  60 |   60.0 |    60.0 |
+|   0.017 | Yuqi Chang                     |       1 |  59 |   59.0 |    59.0 |
+|   0.017 | Nguyen Hong Ninh               |       1 |  44 |   44.0 |    44.0 |
+|   0.017 | Smit Hinsu                     |       1 |  58 |   58.0 |    58.0 |
+|   0.018 | Zameer Papasaheb               |       1 |  57 |   57.0 |    57.0 |
+|   0.018 | Tayeb Abderrahmani Ghor        |       1 |  71 |   71.0 |    71.0 |
+|   0.018 | William Stern                  |       1 |  56 |   56.0 |    56.0 |
+|   0.018 | Patricia Aquino                |       1 |  69 |   69.0 |    69.0 |
+|   0.018 | Wratko Hlavina                 |       1 |  55 |   55.0 |    55.0 |
+|   0.018 | Sara Fowdy Strange             |       1 |  41 |   41.0 |    41.0 |
+|   0.019 | Zhaoliang Pi                   |       1 |  54 |   54.0 |    54.0 |
+|   0.019 | S. T. Persson                  |       1 |  40 |   40.0 |    40.0 |
+|   0.019 | Takahisa Kaihotsu              |       1 |  53 |   53.0 |    53.0 |
+|   0.019 | Yvonne T. van der Schouw       |       1 |  52 |   52.0 |    52.0 |
+|   0.020 | Yi-Ju Chang                    |       1 |  51 |   51.0 |    51.0 |
+|   0.020 | Volker Guelzow                 |       1 |  50 |   50.0 |    50.0 |
+|   0.020 | Sihang Wu                      |       2 | 155 |  114.0 |   114.0 |
+|   0.020 | Chang-Ming Chang               |       2 | 139 |  108.0 |   108.0 |
+|   0.020 | G. Ulsh                        |       2 | 115 |   90.0 |    90.0 |
+|   0.020 | P. Trojovsky                   |       1 |  37 |   37.0 |    37.0 |
+|   0.020 | Yury Gonikberg                 |       1 |  49 |   49.0 |    49.0 |
+|   0.021 | Yeshu Sharma                   |       1 |  48 |   48.0 |    48.0 |
+|   0.021 | Daniele Bonacorsi              |       2 | 118 |   98.5 |    98.5 |
+|   0.021 | Maria Luisa Matey-Hernandez    |       1 |  59 |   59.0 |    59.0 |
+|   0.021 | Zainulabedin Waqar             |       1 |  47 |   47.0 |    47.0 |
+|   0.021 | SciPy 1. 0 Contributors        |       1 |  35 |   35.0 |    35.0 |
+|   0.022 | William Barott                 |       1 |  46 |   46.0 |    46.0 |
+|   0.022 | D. Pedretti                    |       1 |  57 |   57.0 |    57.0 |
+|   0.022 | P. Bai                         |       1 |  34 |   34.0 |    34.0 |
+|   0.022 | Z. Xia                         |       1 |  45 |   45.0 |    45.0 |
+|   0.023 | Yung-Teng Lin                  |       1 |  44 |   44.0 |    44.0 |
+|   0.023 | Noam Shoresh                   |       2 |  96 |   87.0 |    87.0 |
+|   0.023 | Y. Khudyakov                   |       1 |  43 |   43.0 |    43.0 |
+|   0.023 | Z. Zeuge                       |       1 |  32 |   32.0 |    32.0 |
+|   0.024 | Øyvind Meistadt                |       1 |  42 |   42.0 |    42.0 |
+|   0.024 | T. Jamal-Eddine                |       2 | 115 |   90.0 |    90.0 |
+|   0.024 | O. Tudisco                     |       1 |  31 |   31.0 |    31.0 |
+|   0.024 | Yevgeniy Kagan                 |       1 |  41 |   41.0 |    41.0 |
+|   0.025 | L. D. Garrett                  |       1 |  51 |   51.0 |    51.0 |
+|   0.025 | Z. Akopov                      |       1 |  50 |   50.0 |    50.0 |
+|   0.025 | Zenian Chen                    |       1 |  40 |   40.0 |    40.0 |
+|   0.025 | Émilie-Laure Zins              |       1 |  30 |   30.0 |    30.0 |
+|   0.026 | Nika Abdollahi                 |       1 |  49 |   49.0 |    49.0 |
+|   0.026 | Young Koung Lee                |       1 |  39 |   39.0 |    39.0 |
+|   0.026 | Deepak Kushwaha                |       2 |  99 |   73.5 |    73.5 |
+|   0.026 | Sebastian Topczewski           |       1 |  29 |   29.0 |    29.0 |
 ```
 
 
