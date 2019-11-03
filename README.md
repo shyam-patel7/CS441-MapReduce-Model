@@ -5,15 +5,15 @@ This project is utilizes the [Apache Hadoop 3.2.1](http://hadoop.apache.org) fra
 
 
 ## Background
-The outputs of the job provide information about authors, conferences, journals, venues (e.g., articles, conferences, books, PhD theses, Masterís theses), numbers of co-authors, years of publications, and numbers of publications produced at various events and by respective journals.
+The outputs of the job provide information about authors, conferences, journals, venues (e.g., articles, conferences, books, PhD theses, Master‚Äôs theses), numbers of co-authors, years of publications, and numbers of publications produced at various events and by respective journals.
 An authorship score is assigned to each author, which is used to rank the top 100 authors and the bottom 100 authors of the entire dataset.
-Head authors are granted a raise in their scores for their contributions to the publications, whereas tail authorsÌ scores are reduced by the same amount.
+Head authors are granted a raise in their scores for their contributions to the publications, whereas tail authors√≠ scores are reduced by the same amount.
 
 The full dataset is located at the [DBLP](https://dblp.uni-trier.de/xml) website.
 First, the XML dataset is split into smaller subsets, which are sent to an equivalent number of mappers for processing.
-At this stage, keyÛvalue pairs are formed of the Hadoop I/O types *Text* and *FloatArrayWritable*, respectively.
+At this stage, key‚Äîvalue pairs are formed of the Hadoop I/O types *Text* and *FloatArrayWritable*, respectively.
 The Hadoop types are encoded in the UTF-8 Unicode standard and are utilized by the Hadoop MapReduce framework as they provide built-in methods for serialization and deserialization between map and reduce tasks.
-This becomes important in terms of efficiency when hundreds of thousands of keyÛvalue pairs are emitted through various processes running in parallel.
+This becomes important in terms of efficiency when hundreds of thousands of key‚Äîvalue pairs are emitted through various processes running in parallel.
 *FloatArrayWritable* is a custom type that extends the *ArrayWritable* class, which encapsulates an array of type *Writable*.
 In this case, type *FloatWritable* was chosen as it provides adequate precision for holding authorship scores and median and average numbers of co-authors, while maintaining a similar expense in size (e.g., in bytes) as type *IntWritable*.
 
@@ -69,15 +69,15 @@ The tests will run automatically when the JAR is assembled. However, if you woul
 ## MapReduce
 The MapReduce implementation in this project is comprised of 5 phases.
 
-1. First, the **XmlInputFormat** class, which extends *TextInputFormat*, returns a custom record reader that uses the pre-defined start and end tags (e.g., located in *application.conf*) to scan through the input stream byte-by-byte to return publication records that are sent to mappers as keyÛvalue pairs, where keys are positions in the XML input file (e.g., type *LongWritable*), and values are the lines of text that contain the publication record (e.g., type *Text*).
-2. During the **mapper #1** phase, publication records are mapped into various keyÛvalue pairs. For each publication, the venue type is ascertained, as well as any authors or editors that are listed in the record. If author(s) is/are listed, their names are stored, through which their count is determined, and each co-authorÌs score is calculated using the formula described in the documentation. Then, each author is emitted as a keyÛvalue pair, where the key is the authorÌs name, and the value consists of the number of co-authors in the publication and the score the author received for his or her contribution. Similarly, if author(s) is/are listed, the venue is mapped as a keyÛvalue pair, where the key is the venue type and the value is the number of co-authors in the publication. If the venue type is ascertained to be a conference or a journal, keyÛvalue pairs with value one are emitted, where the keys represent the names of conferences or respective journals. In order to group numbers of co-authors into bins that can be used to plot a histogram that describes publications by co-authors, the number of co-authors in the publication are matched into a corresponding bin, which is mapped as the key in a keyÛvalue pair with value one. If the year of the publication is listed, it is matched into its corresponding decade bin, mapped as the key in a keyÛvalue pair with value one.
-3. During the **reducer** phase, keyÛvalue pairs emitted by mapper #1 are reduced. For author keyÛvalue pairs (e.g., where the key represents a single author), authorship score values are summed, and numbers of co-authors are merged into a single set. Similarly, for venue keyÛvalue pairs (e.g., where the key represents a single venue type), numbers of co-authors are merged. For all other keyÛvalue pairs, counts are summed and updated.
-4. During the **mapper #2** phase, keyÛvalue pairs that have already passed through the reducer phase undergo their final mappings. For both author and venue type keyÛvalue pairs, sets of numbers of co-authors are sorted and transformed into smaller sets that each contain the total number of publications, the maximum number of co-authors, the median number of co-authors, and the average number of co-authors. Author keyÛvalue pairs also retain cumulative authorship scores for each author, who are ranked into lists of the top 100 and the bottom 100 authors. For conference and journal keyÛvalue pairs, counts are also placed into bins. All final keyÛvalue pairs are emitted.
-5. Finally, the **CsvOutputFormat** class gets the default path for the output with *.csv* extension, sets its base name (e.g., results) and returns a custom record writer that writes keyÛvalue pairs into the data output stream with a comma separator in accordance with the CSV file format.
+1. First, the **XmlInputFormat** class, which extends *TextInputFormat*, returns a custom record reader that uses the pre-defined start and end tags (e.g., located in *application.conf*) to scan through the input stream byte-by-byte to return publication records that are sent to mappers as key‚Äîvalue pairs, where keys are positions in the XML input file (e.g., type *LongWritable*), and values are the lines of text that contain the publication record (e.g., type *Text*).
+2. During the **mapper #1** phase, publication records are mapped into various key‚Äîvalue pairs. For each publication, the venue type is ascertained, as well as any authors or editors that are listed in the record. If author(s) is/are listed, their names are stored, through which their count is determined, and each co-author√≠s score is calculated using the formula described in the documentation. Then, each author is emitted as a key‚Äîvalue pair, where the key is the author√≠s name, and the value consists of the number of co-authors in the publication and the score the author received for his or her contribution. Similarly, if author(s) is/are listed, the venue is mapped as a key‚Äîvalue pair, where the key is the venue type and the value is the number of co-authors in the publication. If the venue type is ascertained to be a conference or a journal, key‚Äîvalue pairs with value one are emitted, where the keys represent the names of conferences or respective journals. In order to group numbers of co-authors into bins that can be used to plot a histogram that describes publications by co-authors, the number of co-authors in the publication are matched into a corresponding bin, which is mapped as the key in a key‚Äîvalue pair with value one. If the year of the publication is listed, it is matched into its corresponding decade bin, mapped as the key in a key‚Äîvalue pair with value one.
+3. During the **reducer** phase, key‚Äîvalue pairs emitted by mapper #1 are reduced. For author key‚Äîvalue pairs (e.g., where the key represents a single author), authorship score values are summed, and numbers of co-authors are merged into a single set. Similarly, for venue key‚Äîvalue pairs (e.g., where the key represents a single venue type), numbers of co-authors are merged. For all other key‚Äîvalue pairs, counts are summed and updated.
+4. During the **mapper #2** phase, key‚Äîvalue pairs that have already passed through the reducer phase undergo their final mappings. For both author and venue type key‚Äîvalue pairs, sets of numbers of co-authors are sorted and transformed into smaller sets that each contain the total number of publications, the maximum number of co-authors, the median number of co-authors, and the average number of co-authors. Author key‚Äîvalue pairs also retain cumulative authorship scores for each author, who are ranked into lists of the top 100 and the bottom 100 authors. For conference and journal key‚Äîvalue pairs, counts are also placed into bins. All final key‚Äîvalue pairs are emitted.
+5. Finally, the **CsvOutputFormat** class gets the default path for the output with *.csv* extension, sets its base name (e.g., results) and returns a custom record writer that writes key‚Äîvalue pairs into the data output stream with a comma separator in accordance with the CSV file format.
 
 
 ## Results
-The results of the MapReduce job can be obtained using Ambariís [Files View UI](http://sandbox-hdp.hoziprtonworks.com:8080). From the userís output directory, select *results.csv* and the Plotly charts named *co-authors.html*, *conferences.html*, *journals.html* and *years.html*. Click Download.
+The results of the MapReduce job can be obtained using Ambari‚Äôs [Files View UI](http://sandbox-hdp.hoziprtonworks.com:8080). From the user‚Äôs output directory, select *results.csv* and the Plotly charts named *co-authors.html*, *conferences.html*, *journals.html* and *years.html*. Click Download.
 
 ![Ambari](https://bitbucket.org/spate54/shyam_patel_hw2/raw/10000b514fc37d79b36f594eac677dde9e0f748b/images/AmbariFilesView.png)
 
@@ -248,7 +248,7 @@ As can be observed by this histogram, the great majority of conferences have pub
 |   0.004 | Yutaka Nakachi                 |       1 | 264 |  264.0 |   264.0 |
 |   0.005 | Marcel Zoll                    |       2 | 287 |  287.0 |   287.0 |
 |   0.006 | Omar Zapata                    |       1 | 118 |  118.0 |   118.0 |
-|   0.006 | ¡lvaro Iglesias-Arias          |       1 | 155 |  155.0 |   155.0 |
+|   0.006 | √Ålvaro Iglesias-Arias          |       1 | 155 |  155.0 |   155.0 |
 |   0.007 | K. Yates                       |       1 | 115 |  115.0 |   115.0 |
 |   0.007 | Yolanda Sestayo de la Cerra    |       2 | 287 |  287.0 |   287.0 |
 |   0.007 | Zexiong Cai                    |       1 | 139 |  139.0 |   139.0 |
@@ -286,7 +286,7 @@ As can be observed by this histogram, the great majority of conferences have pub
 |   0.014 | Yu. M. Shatunov                |       1 |  71 |   71.0 |    71.0 |
 |   0.014 | Jason Yosinksi                 |       1 |  53 |   53.0 |    53.0 |
 |   0.014 | Vineet Sethia                  |       1 |  70 |   70.0 |    70.0 |
-|   0.014 | Zafer Y¸ksel                   |       1 |  69 |   69.0 |    69.0 |
+|   0.014 | Zafer Y√ºksel                   |       1 |  69 |   69.0 |    69.0 |
 |   0.015 | Nick Langridge                 |       1 |  68 |   68.0 |    68.0 |
 |   0.015 | J. Ippolito                    |       1 |  51 |   51.0 |    51.0 |
 |   0.015 | Wayne Arcus                    |       1 |  67 |   67.0 |    67.0 |
@@ -333,14 +333,14 @@ As can be observed by this histogram, the great majority of conferences have pub
 |   0.023 | Noam Shoresh                   |       2 |  96 |   87.0 |    87.0 |
 |   0.023 | Y. Khudyakov                   |       1 |  43 |   43.0 |    43.0 |
 |   0.023 | Z. Zeuge                       |       1 |  32 |   32.0 |    32.0 |
-|   0.024 | ÿyvind Meistadt                |       1 |  42 |   42.0 |    42.0 |
+|   0.024 | ≈òyvind Meistadt                |       1 |  42 |   42.0 |    42.0 |
 |   0.024 | T. Jamal-Eddine                |       2 | 115 |   90.0 |    90.0 |
 |   0.024 | O. Tudisco                     |       1 |  31 |   31.0 |    31.0 |
 |   0.024 | Yevgeniy Kagan                 |       1 |  41 |   41.0 |    41.0 |
 |   0.025 | L. D. Garrett                  |       1 |  51 |   51.0 |    51.0 |
 |   0.025 | Z. Akopov                      |       1 |  50 |   50.0 |    50.0 |
 |   0.025 | Zenian Chen                    |       1 |  40 |   40.0 |    40.0 |
-|   0.025 | …milie-Laure Zins              |       1 |  30 |   30.0 |    30.0 |
+|   0.025 | √âmilie-Laure Zins              |       1 |  30 |   30.0 |    30.0 |
 |   0.026 | Nika Abdollahi                 |       1 |  49 |   49.0 |    49.0 |
 |   0.026 | Young Koung Lee                |       1 |  39 |   39.0 |    39.0 |
 |   0.026 | Deepak Kushwaha                |       2 |  99 |   73.5 |    73.5 |
