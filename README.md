@@ -76,26 +76,45 @@ The results of the MapReduce job can be obtained using Ambari’s [Files View UI](
 
 ![Ambari](https://bitbucket.org/spate54/shyam_patel_hw2/raw/10000b514fc37d79b36f594eac677dde9e0f748b/images/AmbariFilesView.png)
 
-The
-```
-========== Co-authors ==========   =========== Journals ===========
-| Num Co-authors  | Num Pub    |   | Num Pub         | # Journals |
-|  1 co-author    |     812090 |   |    1-199        |        571 |
-|  2-3 co-authors |    2481779 |   |  200-499        |        419 |
-|  4-6 co-authors |    1305908 |   |  500-1199       |        387 |
-|  7-9 co-authors |     137770 |   | 1200-2399       |        220 |
-| 10+ co-authors  |      35301 |   | 2400+           |        211 |
 
-========= Conferences ==========   ============ Years =============
-| Num Pub         | Num Conf   |   | Decade          | Num Pub    |
-|    1-199        |       2792 |   | 1970s & earlier |      55519 |
-|  200-599        |       1098 |   | 1980s           |     128386 |
-|  600-1199       |        500 |   | 1990s           |     442477 |
-| 1200-1999       |        235 |   | 2000s           |    1403224 |
-| 2000+           |        228 |   | 2010s           |    2795755 |
+
+**Figure 1.** The number of co-authors and decades for each publication in the dataset.
+```
+========== Co-authors ==========   ============ Years =============
+| Num Co-authors  | Num Pub    |   | Decade          | Num Pub    |
+|  1 co-author    |     812090 |   | 1970s & earlier |      55519 |
+|  2-3 co-authors |    2481779 |   | 1980s           |     128386 |
+|  4-6 co-authors |    1305908 |   | 1990s           |     442477 |
+|  7-9 co-authors |     137770 |   | 2000s           |    1403224 |
+| 10+ co-authors  |      35301 |   | 2010s           |    2795755 |
 ```
 
-The types of venues in the dataset, in addition to the number of publications and the maximum, median, and average number of co-authors in each type.
+![Co-authors](https://bitbucket.org/spate54/shyam_patel_hw2/raw/121942c864862d371e615c63bed1e5d457633213/images/co-authors.png)
+As can be observed in this histogram, the great majority of publications listed in the DBLP dataset (approaching 2.5 million) have between 2-3 co-authors. This is followed by publications that have 4-6
+co-authors (~1.3 million) and, subsequently, by publications that have a single co-author (~800k).
+
+![Years](https://bitbucket.org/spate54/shyam_patel_hw2/raw/121942c864862d371e615c63bed1e5d457633213/images/years.png)
+As can be observed in this histogram, the great majority of publications have been published in the current decade (approaching 2.8 million). This is followed by the previous decade (~1.4 million). The clear trend is that the number of publications is more than doubling through each decade.
+
+**Figure 2.** The number of publications for each journal and conference in the dataset.
+```
+=========== Journals ===========   ========= Conferences ==========
+| Num Pub         | # Journals |   | Num Pub         | Num Conf   |
+|    1-199        |        571 |   |    1-199        |       2792 |
+|  200-499        |        419 |   |  200-599        |       1098 |
+|  500-1199       |        387 |   |  600-1199       |        500 |
+| 1200-2399       |        220 |   | 1200-1999       |        235 |
+| 2400+           |        211 |   | 2000+           |        228 |
+```
+
+![Journals](https://bitbucket.org/spate54/shyam_patel_hw2/raw/121942c864862d371e615c63bed1e5d457633213/images/journals.png)
+As can be observed in this histogram, the majority of journals have published between 1 and 199 publications. This is followed by journals that have published between 200 and 499 publications and, subsequently, by journals that have published between 500 and 1199 publications. The clear trend is that few journals have published a larger number of publications.
+
+![Conferences](https://bitbucket.org/spate54/shyam_patel_hw2/raw/121942c864862d371e615c63bed1e5d457633213/images/conferences.png)
+As can be observed by this histogram, the great majority of conferences have published between 1 and 199 publications. This is followed by conferences that have published between 200 and 599 publications and, subsequently, by conferences that have published between 600 and 1199 publications. Similar to the trend observed in journals, we can see that few conferences have published a large number of publications.
+
+
+**Figure 3.** The types of venues in the dataset, in addition to the number of publications and the maximum, median, and average number of co-authors in each type.
 ```
 ======================== Venues ========================
 | Venue           | Num Pub  | Max  | Median | Average |
@@ -105,10 +124,5 @@ The types of venues in the dataset, in addition to the number of publications an
 | master's theses |       12 |    1 |    1.0 |     1.0 |
 | phD theses      |    74115 |    3 |    1.0 |     1.0 |
 ```
-
-![Co-authors](png)
-![Journals](png)
-![Conferences](png)
-![Years](png)
 
 To view images and analysis, see `Documentation.pdf` located in the project root directory.
