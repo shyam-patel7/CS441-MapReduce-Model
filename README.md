@@ -4,7 +4,7 @@ This is a homework assignment for CS441 at the University of Illinois at Chicago
 This project is utilizes the [Apache Hadoop 3.2.1](http://hadoop.apache.org) framework to run a MapReduce job on the DBLP computer science bibliography dataset in XML format.
 
 ## Background
-The outputs of the job provide information about authors, conferences, journals, venues (e.g., articles, conferences, books, PhD theses, Masterís theses), numbers of co-authors, years of publications, and numbers of publications produced at various events and by respective journals.
+The outputs of the job provide information about authors, conferences, journals, venues (e.g., articles, conferences, books, PhD theses, Master’s theses), numbers of co-authors, years of publications, and numbers of publications produced at various events and by respective journals.
 An authorship score is assigned to each author, which is used to rank the top 100 authors and the bottom 100 authors of the entire dataset.
 Head authors are granted a raise in their scores for their contributions to the publications, whereas tail authorsí scores are reduced by the same amount.
 
