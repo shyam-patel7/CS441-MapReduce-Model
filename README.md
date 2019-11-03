@@ -57,10 +57,11 @@ To successfully run this project, the [Hortonworks Data Platform (HDP)](https://
         hdfs dfs -put conferences.html /user/maria_dev/output
         hdfs dfs -put years.html /user/maria_dev/output
 
+9. For quick removal of the chart outputs from the `/home/maria_dev` directory, use the `rm *.html` command.
 
 ## Tests
 This project includes 14 unit tests based on the [ScalaTest](http://www.scalatest.org) testing framework, which are located in the project's `test/scala` directory and include app configuration and FloatArrayWritable creation tests.
-To run these tests on Terminal, or in IntelliJ IDEA's Terminal tool window, simply `cd` into the `homework2` project root directory and enter the following command: `sbt test`.
+The tests will run automatically when the JAR is assembled. However, if you would like to run them again, simply `cd` into the project root directory and enter the following command: `sbt test`.
 
 ## MapReduce
 The MapReduce implementation in this project, enabled in simulation #3, is comprised of two phases.
@@ -116,4 +117,4 @@ The MapReduce implementation in this project, enabled in simulation #3, is compr
 |    3     | SUCCESS |     1      |  1   |    904.81 |      0.10 |    904.91 | 49.49% |  3,166.83 |
 ```
 
-To view images and analysis, see `Documentation.pdf` located in the `Shyam_Patel_hw2` project root directory.
+To view images and analysis, see `Documentation.pdf` located in the project root directory.
