@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>publications by journals</title>
+<script src="https://cdn.plot.ly/plotly-1.41.3.min.js"></script>
+</head>
+<body>
+<div id="chart"></div>
+<script>
+(function () {
+  var data0 = {"x":["   1-199"," 200-499"," 500-1199","1200-2399","2400+"],"y":[571.0,419.0,387.0,220.0,211.0],"type":"bar","marker":{"color":"rgba(96, 150, 187, 0.6)"}};
+
+  var data = [data0];
+  var layout = {"title":"publications by journals","yaxis":{"title":"# of journals"},"xaxis":{"title":"# of publications"}};
+
+  Plotly.plot('chart', data, layout);
+})();
+</script>
+</body>
+</html>
+       
