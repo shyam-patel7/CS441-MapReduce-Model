@@ -346,6 +346,7 @@ As can be observed by this histogram, the great majority of conferences have pub
 |   0.026 | Deepak Kushwaha                |       2 |  99 |   73.5 |    73.5 |
 |   0.026 | Sebastian Topczewski           |       1 |  29 |   29.0 |    29.0 |
 ```
+As can be seen by these results, authors who rank in the top 100 on average tend to have worked with fewer numbers of co-authors and have great exeprience with writing publications. On the other hand, those who fall in the bottom of the ranking tend to have written only one or two publications with many co-authors.
 
 
 To view images and analysis, see `Documentation.pdf` located in the project root directory.
