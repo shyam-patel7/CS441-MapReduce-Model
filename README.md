@@ -79,7 +79,7 @@ The MapReduce implementation in this project is comprised of 5 phases.
 ## Results
 The results of the MapReduce job can be obtained using Ambari’s [Files View UI](http://sandbox-hdp.hoziprtonworks.com:8080). From the user’s output directory, select *results.csv* and the Plotly charts named *co-authors.html*, *conferences.html*, *journals.html* and *years.html*. Click Download.
 
-![Ambari](https://bitbucket.org/spate54/shyam_patel_hw2/raw/10000b514fc37d79b36f594eac677dde9e0f748b/images/AmbariFilesView.png)
+![Ambari](https://raw.githubusercontent.com/mashy426/CS441-MapReduce/master/images/AmbariFilesView.png)
 
 
 
@@ -94,12 +94,12 @@ The results of the MapReduce job can be obtained using Ambari’s [Files View UI
 | 10+ co-authors  |      35301 |   | 2010s           |    2795755 |
 ```
 
-![Co-authors](https://bitbucket.org/spate54/shyam_patel_hw2/raw/121942c864862d371e615c63bed1e5d457633213/images/co-authors.png)
+![Co-authors](https://raw.githubusercontent.com/mashy426/CS441-MapReduce/master/images/co-authors.png)
 As can be observed in this histogram, the great majority of publications listed in the DBLP dataset (approaching 2.5 million) have between 2-3 co-authors. This is followed by publications that have 4-6
 co-authors (~1.3 million) and, subsequently, by publications that have a single co-author (~800k).
 
 
-![Years](https://bitbucket.org/spate54/shyam_patel_hw2/raw/121942c864862d371e615c63bed1e5d457633213/images/years.png)
+![Years](https://raw.githubusercontent.com/mashy426/CS441-MapReduce/master/images/years.png)
 As can be observed in this histogram, the great majority of publications have been published in the current decade (approaching 2.8 million). This is followed by the previous decade (~1.4 million). The clear trend is that the number of publications is more than doubling through each decade.
 
 
@@ -114,11 +114,11 @@ As can be observed in this histogram, the great majority of publications have be
 | 2400+           |        211 |   | 2000+           |        228 |
 ```
 
-![Journals](https://bitbucket.org/spate54/shyam_patel_hw2/raw/121942c864862d371e615c63bed1e5d457633213/images/journals.png)
+![Journals](https://raw.githubusercontent.com/mashy426/CS441-MapReduce/master/images/journals.png)
 As can be observed in this histogram, the majority of journals have published between 1 and 199 publications. This is followed by journals that have published between 200 and 499 publications and, subsequently, by journals that have published between 500 and 1199 publications. The clear trend is that few journals have published a larger number of publications.
 
 
-![Conferences](https://bitbucket.org/spate54/shyam_patel_hw2/raw/121942c864862d371e615c63bed1e5d457633213/images/conferences.png)
+![Conferences](https://raw.githubusercontent.com/mashy426/CS441-MapReduce/master/images/conferences.png)
 As can be observed by this histogram, the great majority of conferences have published between 1 and 199 publications. This is followed by conferences that have published between 200 and 599 publications and, subsequently, by conferences that have published between 600 and 1199 publications. Similar to the trend observed in journals, we can see that few conferences have published a large number of publications.
 
 
